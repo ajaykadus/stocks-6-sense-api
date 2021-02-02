@@ -1,0 +1,8 @@
+{
+  "name": "stocks-6-sense-api",
+  "version": "1.0.0",
+  "description": "API server for the application",
+  "main": "index.ts",
+  "author": "Ajay Kadus",
+  "license": "MIT"
+}
