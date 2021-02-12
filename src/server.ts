@@ -3,17 +3,29 @@ import { ApolloServer } from "apollo-server-express";
 import cors from "cors";
 import schema from "./Schema";
 
-const app = express();
+const initializeServer = () => {
+    const app = express();
 
-const server = new ApolloServer({
-    schema,
-    playground: true,
-});
+    const server = new ApolloServer({
+        schema,
+        playground: true,
+    });
 
-app.use("*", cors());
+    app.use("*", cors());
 
-server.applyMiddleware({ app, path: "/graphql" });
+    server.applyMiddleware({ app, path: "/graphql" });
 
-app.listen({ port: 8000 }, () => {
-    console.log("Apollo Server on http://localhost:8000/graphql");
-});
+    if (process.env.NODE_ENV === "dev") {
+        app.listen({ port: 8000 }, () => {
+            console.log("Apollo Server on http://localhost:8000/graphql");
+        });
+
+    }
+    return app
+}
+
+if (process.env.NODE_ENV === "dev") {
+    initializeServer()
+}
+
+export default initializeServer
