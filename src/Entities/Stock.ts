@@ -1,10 +1,4 @@
-const stocksList: any[] = [{
-  id: '12@#ef',
-  tickerSymbol: 'aapl',
-  company: 'Apple',
-  lastPrice: 109,
-  predictedPrice: 200
-}]
+import stocks6SenseDb from "../Connectors/FireBase";
 
 export const typeDef = `
   input StockInput {
@@ -28,20 +22,27 @@ export const typeDef = `
 
 export const resolvers = {
   Query: {
-    stocks: () => { return stocksList }
+    stocks: async () => {
+      let stocksResults: FirebaseFirestore.DocumentData[] =[]
+      const stocksRef = stocks6SenseDb.collection('stocks')
+      const stocks = await stocksRef.get()
+      stocks.forEach(s => stocksResults.push(s.data()))
+      console.log(stocksResults,'sferff')
+      return stocksResults
+    }
   },
   Mutation: {
-    addStock: (parent: any, { input }: any) => {
+    addStock: async (parent: any, { input }: any) => {
       const id = require('crypto').randomBytes(10).toString('hex');
       const stockData = {
-        id,
         tickerSymbol: input.tickerSymbol,
         company: input.company,
         lastPrice: 124,
         predictedPrice: 150
       }
-      stocksList.push(stockData)
-      return stockData
+      const stocksRef = stocks6SenseDb.collection('stocks')
+      const data = await stocksRef.doc(id).set(stockData);
+      return data
     }
   }
 }

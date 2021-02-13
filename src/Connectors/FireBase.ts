@@ -1,8 +1,9 @@
 import admin from "firebase-admin"
-import serviceAccount from "../_private/_resources/stocks-6-sense-firebase-adminsdk-310s8-08fbd93901.json"
+
+const serviceAccount = require("../_private/_resources/stocks-6-sense-firebase-adminsdk-310s8-08fbd93901.json")
 
 admin.initializeApp({
-    credential: admin.credential.cert(JSON.stringify(serviceAccount)),
+    credential: admin.credential.cert(serviceAccount),
 });
 
 const stocks6SenseDb = admin.firestore();
