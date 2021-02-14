@@ -2,30 +2,20 @@ import express from "express";
 import { ApolloServer } from "apollo-server-express";
 import cors from "cors";
 import schema from "./Schema";
-import { Express } from "apollo-server-express/node_modules/@types/express/node_modules/@types/express-serve-static-core";
+import initMondoDb from "./Connectors/MongoDb";
 
-const initializeServer = () => {
-    const app = express()
-    const server = new ApolloServer({
-        schema,
-        playground: true,
-    });
+const app = express()
+const server = new ApolloServer({
+    schema,
+    playground: true,
+});
 
-    app.use("*", cors())
-    server.applyMiddleware({ app, path: "/graphql" })
+// initialize mongo database
+initMondoDb()
 
-    return app
-}
+app.use("*", cors())
+server.applyMiddleware({ app, path: "/graphql" })
 
-const startDevServer = (app: Express) => {
-    app.listen({ port: 8000 }, () => {
-        console.log("Apollo Server on http://localhost:8000/graphql")
-    })
-}
-
-if (process.env.NODE_ENV === "dev") {
-    const app = initializeServer()
-    startDevServer(app)
-}
-
-export default initializeServer
+app.listen({ port: 8000 }, () => {
+    console.log("Apollo Server on http://localhost:8000/graphql")
+})

@@ -1,4 +1,5 @@
 import stocks6SenseDb from "../Connectors/FireBase";
+import Stock from "../Models/Stock"
 
 export const typeDef = `
   input StockInput {
@@ -6,7 +7,6 @@ export const typeDef = `
     tickerSymbol: String
   }
   type Stock {
-    id: String!
     tickerSymbol: String
     company: String
     lastPrice: Int
@@ -23,26 +23,35 @@ export const typeDef = `
 export const resolvers = {
   Query: {
     stocks: async () => {
-      let stocksResults: FirebaseFirestore.DocumentData[] =[]
-      const stocksRef = stocks6SenseDb.collection('stocks')
-      const stocks = await stocksRef.get()
-      stocks.forEach(s => stocksResults.push(s.data()))
-      console.log(stocksResults,'sferff')
-      return stocksResults
+      const stocks = await Stock.find({})
+      return stocks
+
+      // Using firebase database
+
+      // let stocksResults: FirebaseFirestore.DocumentData[] =[]
+      // const stocksRef = stocks6SenseDb.collection('stocks')
+      // const stocks = await stocksRef.get()
+      // stocks.forEach(s => stocksResults.push(s.data()))
+      // return stocksResults
     }
   },
   Mutation: {
     addStock: async (parent: any, { input }: any) => {
-      const id = require('crypto').randomBytes(10).toString('hex');
       const stockData = {
         tickerSymbol: input.tickerSymbol,
         company: input.company,
         lastPrice: 124,
         predictedPrice: 150
       }
-      const stocksRef = stocks6SenseDb.collection('stocks')
-      const data = await stocksRef.doc(id).set(stockData);
-      return data
+
+      const newStock = Stock.create(stockData)
+      return newStock
+
+      // Using firebase database
+
+      // const stocksRef = stocks6SenseDb.collection('stocks')
+      // const data = await stocksRef.doc(id).set(stockData);
+      // return data
     }
   }
 }

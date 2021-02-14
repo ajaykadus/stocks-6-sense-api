@@ -1,4 +1,5 @@
 import stocks6SenseDb from "../Connectors/FireBase"
+import User from "../Models/User"
 
 const usersList: Number[] = [1, 2, 3]
 
@@ -8,7 +9,6 @@ export const typeDef = `
     lastName: String
   }
   type User {
-    id: Int!
     firstName: String
     lastName: String
   }
@@ -23,22 +23,31 @@ export const typeDef = `
 export const resolvers = {
   Query: {
     users: async () => {
-      let usersList: FirebaseFirestore.DocumentData[] = []
-      const userRef = stocks6SenseDb.collection('users')
-      const users = await userRef.get()
-      users.forEach(u => usersList.push(u.data()))
-      return usersList
+      const users = await User.find({})
+      return users
+
+      // Using firebase database
+
+      // let usersList: FirebaseFirestore.DocumentData[] = []
+      // const userRef = stocks6SenseDb.collection('users')
+      // const users = await userRef.get()
+      // users.forEach(u => usersList.push(u.data()))
+      // return usersList
     }
   },
   Mutation: {
     addUser: async (parent: any, { input }: any) => {
-      const id = require('crypto').randomBytes(10).toString('hex')
       const userData = {
         firstName: input.firstName,
         lastName: input.lastName
       }
-      const usersRef = stocks6SenseDb.collection('users')
-      await usersRef.doc(id).set(userData)
+      const newUser = await User.create(userData)
+      return newUser
+
+      // Using firebase database
+
+      // const usersRef = stocks6SenseDb.collection('users')
+      // await usersRef.doc(id).set(userData)
     }
   }
 }
