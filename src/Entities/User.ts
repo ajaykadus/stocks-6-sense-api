@@ -1,5 +1,7 @@
 import stocks6SenseDb from "../Connectors/FireBase"
 import User from "../Models/User"
+import PgDb from "../Connectors/PostGreSql"
+import PostGreSql from "../Connectors/PostGreSql"
 
 const usersList: Number[] = [1, 2, 3]
 
@@ -23,8 +25,15 @@ export const typeDef = `
 export const resolvers = {
   Query: {
     users: async () => {
-      const users = await User.find({})
+      // Using postgresql
+
+      const users = await PgDb.query('select firstname as "firstName", lastName as "lastName" from users')
       return users
+      
+      //Using MongoDb
+
+      // const users = await User.find({})
+      // return users
 
       // Using firebase database
 
@@ -41,8 +50,20 @@ export const resolvers = {
         firstName: input.firstName,
         lastName: input.lastName
       }
-      const newUser = await User.create(userData)
+
+      // Using PostGreSql
+
+      const newUser = PostGreSql.query('Insert into users(firstName, lastName) values($1, $2, $3)',
+      [userData.firstName, userData.lastName])
+
+      console.log(newUser,'newusere')
       return newUser
+
+
+      // Using MongoDb
+      
+      // const newUser = await User.create(userData)
+      // return newUser
 
       // Using firebase database
 

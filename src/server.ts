@@ -11,7 +11,9 @@ const server = new ApolloServer({
 });
 
 // initialize mongo database
-initMondoDb()
+if (process.env.MONGO_DB_ENALBED)  {
+    initMondoDb()
+}
 
 app.use("*", cors())
 server.applyMiddleware({ app, path: "/graphql" })

@@ -2,7 +2,7 @@ require('dotenv').config()
 import { EPERM } from 'constants';
 import pgPromise from 'pg-promise'
 
-const pgp = pgPromise({}); // Empty object means no additional config required
+const pgp = pgPromise({ capSQL: true }); // Empty object means no additional config required
 
 const config = {
     host: process.env.POSTGRES_HOST,
