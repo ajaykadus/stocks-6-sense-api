@@ -29,7 +29,7 @@ export const resolvers = {
 
       const users = await PgDb.query('select firstname as "firstName", lastName as "lastName" from users')
       return users
-      
+
       //Using MongoDb
 
       // const users = await User.find({})
@@ -54,14 +54,13 @@ export const resolvers = {
       // Using PostGreSql
 
       const newUser = PostGreSql.query('Insert into users(firstName, lastName) values($1, $2, $3)',
-      [userData.firstName, userData.lastName])
+        [userData.firstName, userData.lastName])
 
-      console.log(newUser,'newusere')
       return newUser
 
 
       // Using MongoDb
-      
+
       // const newUser = await User.create(userData)
       // return newUser
 
