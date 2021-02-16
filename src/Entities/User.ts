@@ -53,7 +53,7 @@ export const resolvers = {
 
       // Using PostGreSql
 
-      const newUser = PostGreSql.query('Insert into users(firstName, lastName) values($1, $2, $3)',
+      const newUser = PgDb.query('Insert into users(firstName, lastName) values($1, $2, $3)',
         [userData.firstName, userData.lastName])
 
       return newUser

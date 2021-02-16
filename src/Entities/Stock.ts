@@ -1,5 +1,6 @@
 import stocks6SenseDb from "../Connectors/FireBase";
 import Stock from "../Models/Stock"
+import PgDb from "../Connectors/PostGreSql"
 
 export const typeDef = `
   input StockInput {
@@ -23,8 +24,20 @@ export const typeDef = `
 export const resolvers = {
   Query: {
     stocks: async () => {
-      const stocks = await Stock.find({})
+      // Using postgresql
+
+      const stocks = await PgDb.query(`
+      select company as "company", 
+      tickersymbol as "tickerSymbol",
+      lastPrice as "lastPrice",
+      predictedPrice as "predictedPrice" from stocks
+      `)
       return stocks
+
+      //Using MongoDb
+
+      // const stocks = await Stock.find({})
+      // return stocks
 
       // Using firebase database
 
@@ -44,8 +57,20 @@ export const resolvers = {
         predictedPrice: 150
       }
 
-      const newStock = Stock.create(stockData)
+      // Using PostGreSql
+
+      const newStock = PgDb.query(`
+      Insert into stocks(company, tickerSymbol, 
+        lastPrice, predictedPrice) values($1, $2, $3, $4)`,
+        [stockData.company, stockData.tickerSymbol,
+        stockData.lastPrice, stockData.predictedPrice])
+
       return newStock
+
+      //Using MongoDb
+
+      // const newStock = Stock.create(stockData)
+      // return newStock
 
       // Using firebase database
 
