@@ -1,0 +1,25 @@
+# docker-compose.yml
+
+version: "3.7"
+services:
+  postgres:
+    image: postgres
+    environment:
+      POSTGRES_DB: stocks-6-sense
+    ports: 
+      - '5432:5432'
+    volumes:
+      - stocks-6-sense-db:/var/lib/postgresql/data
+
+  stocks-6-sense:
+    build:
+      context: .
+    environment:
+      DB_SCHEMA: postgres
+    depends_on:
+      - postgres
+    ports:
+      - '8000:8000'
+        
+volumes:
+  stocks-6-sense-db:

@@ -12,6 +12,8 @@ const config = {
     password: process.env.POSTGRES_PASSWORD
 } as any
 
+console.log(config,'test')
+
 const db = pgp(config)
 
 export default db
