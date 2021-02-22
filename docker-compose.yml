@@ -3,13 +3,17 @@
 version: "3.7"
 services:
   postgres:
-    image: postgres
+    build:
+      context: .
+      dockerfile: Dockerfile.postgressDb
     environment:
+      POSTGRES_USER: postgres
       POSTGRES_DB: stocks-6-sense
+      POSTGRES_PASSWORD: postgres
     ports: 
       - '5432:5432'
     volumes:
-      - stocks-6-sense-db:/var/lib/postgresql/data
+      - stocks-6-sense:/var/lib/postgresql/data
 
   stocks-6-sense:
     build:
@@ -22,4 +26,4 @@ services:
       - '8000:8000'
         
 volumes:
-  stocks-6-sense-db:
+  stocks-6-sense:

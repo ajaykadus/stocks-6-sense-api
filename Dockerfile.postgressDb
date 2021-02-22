@@ -1,0 +1,6 @@
+FROM postgres:13
+
+COPY ./data/init_db.sh /docker-entrypoint-initdb.d/my_init_db.sh
+COPY ./data/init.sql /init.sql
+
+RUN chmod +x /docker-entrypoint-initdb.d/my_init_db.sh
