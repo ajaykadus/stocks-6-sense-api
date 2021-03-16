@@ -1,13 +1,13 @@
 require('dotenv').config()
-import { EPERM } from 'constants';
+import { EPERM } from 'constants'
 import pgPromise from 'pg-promise'
 
-const pgp = pgPromise({ capSQL: true }); // Empty object means no additional config required
+const pgp = pgPromise({ capSQL: true })
 const isDev = process.env.NODE_ENV === 'dev'
 const host = isDev ? process.env.POSTGRES_HOST_LOCAL : process.env.
 POSTGRES_HOST
 const user = isDev ? process.env.POSTGRES_USER_LOCAL : process.env.POSTGRES_USER
-const password = isDev ? process.env.POSTGRES_PASSWD_LOCAL : process.env.POSTGRES_PASSWORD
+const password = isDev ? process.env.POSTGRES_PASSWORD_LOCAL : process.env.POSTGRES_PASSWORD
 
 const config = {
     host,

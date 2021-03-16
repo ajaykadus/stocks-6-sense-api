@@ -6,6 +6,8 @@ export const typeDef = `
   input StockInput {
     company: String
     tickerSymbol: String
+    lastPrice: Int
+    predictedPrice: Int
   }
   type Stock {
     tickerSymbol: String
@@ -53,8 +55,8 @@ export const resolvers = {
       const stockData = {
         tickerSymbol: input.tickerSymbol,
         company: input.company,
-        lastPrice: 124,
-        predictedPrice: 150
+        lastPrice: input.lastPrice,
+        predictedPrice: input.predictedPrice
       }
 
       // Using PostGreSql
