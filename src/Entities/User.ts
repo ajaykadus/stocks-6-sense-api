@@ -86,18 +86,18 @@ export const resolvers = {
     },
     login: async (parent: any, { email, password }: any) => {
       // Using PostGreSql
-      const user = await PgDb.query(`select * from users where email='${email}'`)
-
+      const userData = await PgDb.query(`select firstname as "firstName", lastname as "lastName", email as "email", password as "password" from users where email='${email}'`)
+      const user = userData.length > 0 ? userData[0] : null
       if (!user) {
         throw new Error("No such user found");
       }
       console.log(user, password, 'check this')
-      const valid = await bcrypt.compare(password, user[0].password);
+      const valid = await bcrypt.compare(password, user.password);
       if (!valid) {
         throw new Error("Invalid password");
       }
 
-      const token = jwt.sign({ userId: user.id }, Secrets.APP_SECRET);
+      const token = jwt.sign({ userId: user.email }, Secrets.APP_SECRET);
 
       return {
         token,
